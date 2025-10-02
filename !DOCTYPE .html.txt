@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>反毒抽獎測驗</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    h1 { color: #2a9d8f; }
+    .question { margin-bottom: 20px; }
+    button { padding: 10px 20px; background: #2a9d8f; color: white; border: none; cursor: pointer; margin-top:10px; }
+    button:hover { background: #1e6f63; }
+    #formSection { display: none; margin-top: 20px; }
+    input { padding: 8px; margin: 5px 0; width: 250px; }
+  </style>
+</head>
+<body>
+  <h1>🚫 反毒測驗抽獎 🚫</h1>
+  <form id="quizForm">
+    <div class="question">
+      <p>1. 請問下列圖片中哪些是毒品？</p>
+      <!-- 這裡可以放圖片 -->
+      <label><input type="checkbox" name="q1" value="A"> 安非他命</label><br>
+      <label><input type="checkbox" name="q1" value="B"> 海洛因</label><br>
+      <label><input type="checkbox" name="q1" value="C"> 咖啡</label><br>
+      <label><input type="checkbox" name="q1" value="D"> 大麻</label>
+    </div>
+
+    <div class="question">
+      <p>2. 請問大麻屬於第幾級毒品？</p>
+      <label><input type="radio" name="q2" value="A"> 第一級</label><br>
+      <label><input type="radio" name="q2" value="B"> 第二級</label><br>
+      <label><input type="radio" name="q2" value="C"> 第三級</label><br>
+      <label><input type="radio" name="q2" value="D"> 第四級</label>
+    </div>
+
+    <div class="question">
+      <p>3. 請問反毒專線是？</p>
+      <label><input type="radio" name="q3" value="A"> 110</label><br>
+      <label><input type="radio" name="q3" value="B"> 165</label><br>
+      <label><input type="radio" name="q3" value="C"> 0800-770-885</label><br>
+      <label><input type="radio" name="q3" value="D"> 119</label>
+    </div>
+
+    <button type="button" onclick="checkAnswers()">提交答案</button>
+  </form>
+
+  <p id="result"></p>
+
+  <!-- 抽獎報名表單 -->
+  <div id="formSection">
+    <h2>💌 抽獎報名表單</h2>
+    <form id="lotteryForm">
+      <label>姓名：<br><input type="text" name="name" required></label><br>
+      <label>電話：<br><input type="text" name="phone" required></label><br>
+      <button type="submit">送出參加抽獎</button>
+    </form>
+    <p id="submitResult"></p>
+  </div>
+
+  <script>
+    function checkAnswers() {
+      let score = 0;
+
+      // 題目1正確答案: A, B, D
+      let q1Answers = Array.from(document.querySelectorAll('input[name="q1"]:checked')).map(i => i.value);
+      let correctQ1 = ["A","B","D"];
+      if (q1Answers.length === correctQ1.length && q1Answers.every(val => correctQ1.includes(val))) {
+        score += 33;
+      }
+
+      // 題目2正確答案: B (第二級)
+      if (document.querySelector('input[name="q2"]:checked')?.value === "B") score += 33;
+
+      // 題目3正確答案: C (0800-770-885)
+      if (document.querySelector('input[name="q3"]:checked')?.value === "C") score += 34;
+
+      let result = document.getElementById("result");
+      let formSection = document.getElementById("formSection");
+
+      if (score === 100) {
+        result.textContent = "💯 恭喜！你答對了，獲得 100 分，可以參加抽獎！";
+        result.style.color = "green";
+        formSection.style.display = "block";
+      } else {
+        result.textContent = "😏 分數：" + score + " 分，還差一點，不能參加抽獎喔！";
+        result.style.color = "red";
+        formSection.style.display = "none";
+      }
+    }
+
+    document.getElementById("lotteryForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      document.getElementById("submitResult").textContent = "✅ 已成功報名抽獎！祝你好運 🍀";
+    });
+  </script>
+</body>
+</html>
